@@ -161,22 +161,18 @@
 	});*/
 	var loader = new THREE.ColladaLoader();
 	loader.options.convertUpAxis = true;
-	loader.load( './models/dae/1-5.dae', function ( collada ) {
+	loader.load( './models/dae/move.dae', function ( collada ) {
 		dae = collada.scene;
 		dae.traverse( function ( child ) {
-
 			if ( child instanceof THREE.SkinnedMesh ) {
-
 				var animation = new THREE.Animation( child, child.geometry.animation );
 				animation.play();
-
 			}
-
 		} );
 		// dae.scale.x = dae.scale.y = dae.scale.z = 0.001;
-		dae.position.z=40;
-		dae.position.y=80;
-		dae.position.x=80;
+		dae.position.z=10;
+		dae.position.y=10;
+		dae.position.x=10;
 		dae.rotation.set( 0,Math.PI/2,Math.PI/2);
 		markerRoot.add( dae );
 		onRenderFcts.push(function(delta){
