@@ -22,7 +22,6 @@
 	<script src='js/vendor/threex/threex-arbasecontrols.js'></script>
 	<script src='js/vendor/threex/threex-armarkercontrols.js'></script>
 	<script src='js/vendor/threex/threex-arsmoothedcontrols.js'></script>
-	<script>THREEx.ArToolkitContext.baseURL = '../'</script>
 </head>
 	<body style='margin : 0px; overflow: hidden; font-family: Monospace;'>
 		<div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
@@ -162,7 +161,7 @@
 	});*/
 	var loader = new THREE.ColladaLoader();
 	loader.options.convertUpAxis = true;
-	loader.load( './data/dae/monster.dae', function ( collada ) {
+	loader.load( './models/dae/monster.dae', function ( collada ) {
 		dae = collada.scene;
 		dae.traverse( function ( child ) {
 
