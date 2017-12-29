@@ -169,10 +169,7 @@
 				animation.play();
 			}
 		} );
-		// dae.scale.x = dae.scale.y = dae.scale.z = 0.001;
-		dae.position.z=10;
-		dae.position.y=10;
-		dae.position.x=10;
+		dae.scale.x = dae.scale.y = dae.scale.z = 0.001;
 		dae.rotation.set( 0,Math.PI/2,Math.PI/2);
 		markerRoot.add( dae );
 		onRenderFcts.push(function(delta){
