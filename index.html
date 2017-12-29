@@ -7,6 +7,7 @@
 	<!-- three.js library -->
 	<script src='js/vendor/three.js/build/three.js'></script>
 	<script src='js/vendor/three.js/examples/js/libs/stats.min.js'></script>
+	<script src="js/vendor/three.js/ColladaLoader.js"></script>
 	<!-- jsartookit -->
 	<script src='js/vendor/jsartoolkit5/build/artoolkit.min.js'></script>
 	<script src='js/vendor/jsartoolkit5/js/artoolkit.api.js'></script>
@@ -157,7 +158,7 @@
 	});*/
 	var loader = new THREE.ColladaLoader();
 	loader.options.convertUpAxis = true;
-	loader.load( 'data/dae/monster.dae', function ( collada ) {
+	loader.load( './data/dae/monster.dae', function ( collada ) {
 		dae = collada.scene;
 		dae.traverse( function ( child ) {
 
