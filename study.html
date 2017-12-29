@@ -26,6 +26,7 @@
 			  //为了保持照相机的横竖比例，需要保证(right - left)与(top - bottom)的比例与Canvas宽度与高度的比例一致，为了保证场景中的物体不会因为太近或太远而被照相机忽略，一般near的值设置得较小，far的值设置得较大
 			var camera = new THREE.OrthographicCamera(-2, 2, 1.5, -1.5, 1, 10);
 			camera.position.set(4, -3, 5);
+			camera.lookAt(new THREE.Vector3(0, 0, 0));
 			scene.add(camera);
 			/*长方体（例子）创建一个x、y、z方向长度分别为1、2、3的长方体，并将其设置为红色。*/
 			var cube = new THREE.Mesh(new THREE.CubeGeometry(1, 1, 3),
