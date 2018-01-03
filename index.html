@@ -41,7 +41,7 @@
 	// renderer.setPixelRatio( 2 );
 	renderer.setSize( window.innerWidth, window.innerHeight );
 	renderer.domElement.style.position = 'absolute'
-	renderer.domElement.style.top = '10px'
+	renderer.domElement.style.top = '0px'
 	renderer.domElement.style.left = '0px'
 	document.body.appendChild( renderer.domElement );
 
@@ -64,6 +64,7 @@
 
 	// Create a camera
 	var camera = new THREE.Camera();
+	camera.position.set(0, 0, 5);
 	scene.add(camera);
 
 	////////////////////////////////////////////////////////////////////////////////
