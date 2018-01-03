@@ -66,15 +66,17 @@
 				camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
 			})
 			/*形状*/
+			var geometry	= new THREE.CubeGeometry(1,1,1);
 			var cube = new THREE.Mesh(new THREE.SphereGeometry(3, 18, 6),
 		        new THREE.MeshBasicMaterial({//MeshBasicMaterial大致可以猜测出这是一种材质，可以用来设置物体的颜色
 		            color: 0x34cfb4,
 		            wireframe: true
 		        })
 			);
-			scene.add(cube);
+			var mesh = new THREE.Mesh( geometry, cube );
 			var markerRoot = new THREE.Group
-			scene.add(markerRoot)
+			scene.add(markerRoot)；
+			markerRoot.add(mesh);
 			var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
 				type : 'pattern',
 				patternUrl : 'data/pattern-files/pattern-hiro.patt'
