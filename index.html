@@ -64,6 +64,7 @@
 
 	// Create a camera
 	var camera = new THREE.Camera();
+	camera.position.set(100,100,100);
 	scene.add(camera);
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -170,7 +171,7 @@
 			}
 		} );
 		dae.scale.x = dae.scale.y = dae.scale.z = 0.001;
-		dae.rotation.set( 0.1,0.1,0.1);
+		dae.rotation.set( 0,Math.PI/2,Math.PI/2);
 		markerRoot.add( dae );
 		onRenderFcts.push(function(delta){
 			mesh.rotation.x += delta * Math.PI;
