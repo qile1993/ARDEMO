@@ -161,7 +161,7 @@
 	});*/
 	var loader = new THREE.ColladaLoader();
 	loader.options.convertUpAxis = true;
-	loader.load( './models/dae/1-4.dae', function ( collada ) {
+	loader.load( './models/dae/1-5.dae', function ( collada ) {
 		dae = collada.scene;
 		dae.traverse( function ( child ) {
 			if ( child instanceof THREE.SkinnedMesh ) {
@@ -170,7 +170,7 @@
 			}
 		} );
 		dae.scale.x = dae.scale.y = dae.scale.z = 0.001;
-		dae.rotation.set( 0,Math.PI/2,Math.PI/2);
+		dae.rotation.set( 0,0,Math.PI/2);
 		markerRoot.add( dae );
 		onRenderFcts.push(function(delta){
 			mesh.rotation.x += delta * Math.PI;
