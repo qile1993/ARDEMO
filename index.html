@@ -142,7 +142,7 @@
 	
 	// ASCII file
 
-	/*var loader = new THREE.STLLoader();
+	var loader = new THREE.STLLoader();
 	loader.load( './models/stl/ttwan.stl', function ( geometry ) {
 
 		var material = new THREE.MeshPhongMaterial( { color: 0xff5533, specular: 0x111111, shininess: 200 } );
@@ -158,24 +158,24 @@
 		// scene.add( mesh );
 		markerRoot.add( mesh );
 
-	});*/
-	var loader = new THREE.ColladaLoader();
-	loader.options.convertUpAxis = true;
-	loader.load( './models/dae/1-5.dae', function ( collada ) {
-		dae = collada.scene;
-		dae.traverse(function(child) {
-	        if (child instanceof THREE.Mesh) {
-	            child.material.side = THREE.DoubleSide;
-	        }
-	    });
-		dae.scale.x = dae.scale.y = dae.scale.z = 0.001;
-		dae.rotation.set( Math.PI/2,-Math.PI*2,Math.PI/2);
-		markerRoot.add( dae );
-		// onRenderFcts.push(function(delta){
-		// 	mesh.rotation.x += delta * Math.PI;
-		// 	dae.updateMatrix();
-		// })
-	} );
+	});
+	// var loader = new THREE.ColladaLoader();
+	// loader.options.convertUpAxis = true;
+	// loader.load( './models/dae/1-5.dae', function ( collada ) {
+	// 	dae = collada.scene;
+	// 	dae.traverse(function(child) {
+	//         if (child instanceof THREE.Mesh) {
+	//             child.material.side = THREE.DoubleSide;
+	//         }
+	//     });
+	// 	dae.scale.x = dae.scale.y = dae.scale.z = 0.001;
+	// 	dae.rotation.set( Math.PI/2,-Math.PI*2,Math.PI/2);
+	// 	markerRoot.add( dae );
+	// 	// onRenderFcts.push(function(delta){
+	// 	// 	mesh.rotation.x += delta * Math.PI;
+	// 	// 	dae.updateMatrix();
+	// 	// })
+	// } );
 
 	// add a torus knot	
 	// var geometry	= new THREE.CubeGeometry(1,1,1);
