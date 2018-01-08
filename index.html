@@ -163,25 +163,26 @@
 	loader.options.convertUpAxis = true;
 	loader.load( './models/dae/1-5.dae', function ( collada ) {
 		dae = collada.scene;
-		dae.traverse( function ( child ) {
-			if ( child instanceof THREE.SkinnedMesh ) {
-				var animation = new THREE.Animation( child, child.geometry.animation );
-				animation.play();
-			}
-		} );
+		dae.traverse(function(child) {
+	        if (child instanceof THREE.Mesh) {
+	            child.material.side = THREE.DoubleSide;
+	        }
+	        if (child instanceof THREE.Mesh) {
+	            child.material = new THREE.MeshLambertMaterial({
+	                color: 0xffff00,
+	                side: THREE.DoubleSide
+	            });
+	        }
+	    });
 		dae.scale.x = dae.scale.y = dae.scale.z = 0.001;
 		dae.rotation.set( Math.PI/2,-Math.PI*2,Math.PI/2);
 		markerRoot.add( dae );
-		setInterval(draw, 20);
 		onRenderFcts.push(function(delta){
 			mesh.rotation.x += delta * Math.PI;
 			dae.updateMatrix();
 		})
 	} );
-	function draw() {
-	    dae.rotation.y = (dae.rotation.y + 0.01) % (Math.PI * 2);
-	    renderer.render(scene, camera);
-	}
+	
 	// add a torus knot	
 	// var geometry	= new THREE.CubeGeometry(1,1,1);
 	// var material	= new THREE.MeshNormalMaterial({
