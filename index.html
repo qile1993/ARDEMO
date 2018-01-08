@@ -128,7 +128,7 @@
 	scene.add(markerRoot)
 	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
 		type : 'pattern',
-		patternUrl : 'data/pattern-files/parrent-hiro.patt'
+		patternUrl : 'data/pattern-files/open.patt'
 		//patternUrl : '../../data/data/patt.kanji',
 	})
 
@@ -171,12 +171,12 @@
 		dae.scale.x = dae.scale.y = dae.scale.z = 0.001;
 		dae.rotation.set( Math.PI/2,-Math.PI*2,Math.PI/2);
 		markerRoot.add( dae );
-		// onRenderFcts.push(function(delta){
-		// 	mesh.rotation.x += delta * Math.PI;
-		// 	dae.updateMatrix();
-		// })
+		onRenderFcts.push(function(delta){
+			mesh.rotation.x += delta * Math.PI;
+			dae.updateMatrix();
+		})
 	} );
-
+	
 	// add a torus knot	
 	// var geometry	= new THREE.CubeGeometry(1,1,1);
 	// var material	= new THREE.MeshNormalMaterial({
