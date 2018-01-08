@@ -171,19 +171,12 @@
 		dae.scale.x = dae.scale.y = dae.scale.z = 0.001;
 		dae.rotation.set( Math.PI/2,-Math.PI*2,Math.PI/2);
 		markerRoot.add( dae );
-		setInterval(draw,200)
 		// onRenderFcts.push(function(delta){
 		// 	mesh.rotation.x += delta * Math.PI;
 		// 	dae.updateMatrix();
 		// })
 	} );
-	function draw() {
-	    dae.rotation.y += 0.01;
-	    if (dae.rotation.y > Math.PI * 2) {
-	        dae.rotation.y -= Math.PI * 2;
-	    }
-	    renderer.render(scene, camera);
-	}
+
 	// add a torus knot	
 	// var geometry	= new THREE.CubeGeometry(1,1,1);
 	// var material	= new THREE.MeshNormalMaterial({
