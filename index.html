@@ -184,9 +184,9 @@
 	} );
 	function draw() {
 	    renderer.render(scene, camera);
-	    mesh.rotation.y += 0.01;
-	    if (mesh.rotation.y > Math.PI * 2) {
-	        mesh.rotation.y -= Math.PI * 2;
+	    dae.rotation.y += 0.01;
+	    if (dae.rotation.y > Math.PI * 2) {
+	        dae.rotation.y -= Math.PI * 2;
 	    }
 	}
 	// add a torus knot	
