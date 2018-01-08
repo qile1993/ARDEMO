@@ -40,7 +40,7 @@
 	var onRenderFcts= [];
 
 	// init scene and camera
-	var scene	= new THREE.Scene();
+	var scene = new THREE.Scene();
 
 	var ambient = new THREE.AmbientLight( 0x666666 );
 	scene.add( ambient );
@@ -64,14 +64,6 @@
 	var arToolkitSource = new THREEx.ArToolkitSource({
 		// to read from the webcam 
 		sourceType : 'webcam',
-		
-		// to read from an image
-		// sourceType : 'image',
-		// sourceUrl : '../../data/images/img.jpg',		
-
-		// to read from a video
-		// sourceType : 'video',
-		// sourceUrl : '../../data/videos/headtracking.mp4',		
 	})
 
 	arToolkitSource.init(function onReady(){
@@ -128,13 +120,13 @@
 	//////////////////////////////////////////////////////////////////////////////////
 
 	// add a torus knot	
-	var geometry	= new THREE.CubeGeometry(1,1,1);
-	var material	= new THREE.MeshNormalMaterial({
+	var geometry = new THREE.CubeGeometry(1,1,1);
+	var material = new THREE.MeshNormalMaterial({
 		transparent : true,
 		opacity: 0.5,
 		side: THREE.DoubleSide
 	}); 
-	var mesh	= new THREE.Mesh( geometry, material );
+	var mesh = new THREE.Mesh( geometry, material );
 	mesh.position.y	= geometry.parameters.height/2
 	markerRoot.add( mesh );
 	
