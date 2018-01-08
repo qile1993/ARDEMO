@@ -21,8 +21,6 @@
 		// antialias	: true,
 		alpha: true
 	});
-	renderer.shadowMapEnabled = true;
-    renderer.shadowMapSoft = true;
 	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
 	// renderer.setPixelRatio( 1/2 );
 	renderer.setSize( window.innerWidth, window.innerHeight );
@@ -145,22 +143,11 @@
 	// arWorldRoot.add( mesh );
 	
 	//var geometry = new THREE.TorusKnotGeometry(0.3,0.1,64,16);
-	var geometry = new THREE.IcosahedronGeometry(1) 
-	// var material = new THREE.MeshNormalMaterial(); 
-	var material = new THREE.MeshPhongMaterial({color: 0x35d9b6});
-	var sphere = new THREE.Mesh(new THREE.SphereGeometry(3, 20, 8), material);
+	var geometry = new THREE.IcosahedronGeometry(3)
+	var material = new THREE.MeshNormalMaterial(); 
 	var mesh = new THREE.Mesh( geometry, material );
 	mesh.position.y = mesh.position.x  = 0.001;
-	mesh.castShadow = true;
-	var light = new THREE.SpotLight(0xffff00, 1, 100, Math.PI / 6, 25);
-	light.shadowCameraNear = 2;
-	light.shadowCameraFar = 1; 
-	light.shadowCameraFov = 3;
-	light.shadowCameraVisible = true;
-
-	light.shadowMapWidth = 10;
-	light.shadowMapHeight = 10;
-	light.shadowDarkness = 0.7;
+	mesh.rotation.set( 0,0,Math.PI*2);
 	arWorldRoot.add( mesh );
 	
 	onRenderFcts.push(function(){
