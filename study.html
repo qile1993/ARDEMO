@@ -53,6 +53,12 @@
 			  //为了保持照相机的横竖比例，需要保证(right - left)与(top - bottom)的比例与Canvas宽度与高度的比例一致，为了保证场景中的物体不会因为太近或太远而被照相机忽略，一般near的值设置得较小，far的值设置得较大
 			var camera = new THREE.Camera();
 			scene.add(camera);
+			arToolkitSource.init(function onReady(){
+				arToolkitSource.onResize(renderer.domElement)		
+			})
+			window.addEventListener('resize', function(){
+				arToolkitSource.onResize(renderer.domElement)		
+			})	
 			var arToolkitContext = new THREEx.ArToolkitContext({
 				cameraParametersUrl: '../../data/data/camera_para.dat',
 				detectionMode: 'mono',
@@ -60,34 +66,42 @@
 				canvasWidth: 80*3,
 				canvasHeight: 60*3,
 			})
-			// initialize it
 			arToolkitContext.init(function onCompleted(){
 				// copy projection matrix to camera
 				camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
 			})
-			/*形状*/
-			var geometry	= new THREE.CubeGeometry(1,1,1);
-			var cube = new THREE.Mesh(new THREE.SphereGeometry(3, 18, 6),
-		        new THREE.MeshBasicMaterial({//MeshBasicMaterial大致可以猜测出这是一种材质，可以用来设置物体的颜色
-		            color: 0x34cfb4,
-		            wireframe: true
-		        })
-			);
-			var mesh = new THREE.Mesh( geometry, cube );
+			onRenderFcts.push(function(){
+				if( arToolkitSource.ready === false )	return
+				arToolkitContext.update( arToolkitSource.domElement )
+			})
+
 			var markerRoot = new THREE.Group
-			scene.add(markerRoot);
-			markerRoot.add(mesh);
+			scene.add(markerRoot)
+			var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
+				type : 'pattern',
+				patternUrl : 'data/pattern-files/open.patt'
+			})
+
+			// add a torus knot	
+			var geometry	= new THREE.CubeGeometry(1,1,1);
+			var material	= new THREE.MeshNormalMaterial({
+				transparent : true,
+				opacity: 0.5,
+				side: THREE.DoubleSide
+			}); 
+			var mesh	= new THREE.Mesh( geometry, material );
+			mesh.position.y	= geometry.parameters.height/2
+			markerRoot.add( mesh );
+			
+			var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,32,32);
+			var material	= new THREE.MeshNormalMaterial(); 
+			var mesh	= new THREE.Mesh( geometry, material );
+			mesh.position.y	= 0.5
+			markerRoot.add( mesh );
+			
 			onRenderFcts.push(function(){
 				mesh.rotation.x += 0.1
 			})
-			var markerRoot = new THREE.Group
-			scene.add(markerRoot);
-			var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
-				type : 'pattern',
-				patternUrl : '../../data/multi/open.td'
-				// patternUrl : '../../data/data/patt.kanji'
-			})
-
 			var stats = new Stats();
 			document.body.appendChild( stats.dom );
 			// render the scene
@@ -95,8 +109,22 @@
 				renderer.render( scene, camera );
 				stats.update();
 			})
-			
-				
+
+
+			// run the rendering loop
+			var lastTimeMsec= null
+			requestAnimationFrame(function animate(nowMsec){
+				// keep looping
+				requestAnimationFrame( animate );
+				// measure time
+				lastTimeMsec	= lastTimeMsec || nowMsec-1000/60
+				var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec)
+				lastTimeMsec	= nowMsec
+				// call each update function
+				onRenderFcts.forEach(function(onRenderFct){
+					onRenderFct(deltaMsec/1000, nowMsec/1000)
+				})
+			})
 	</script>
 </body>
 </html>
