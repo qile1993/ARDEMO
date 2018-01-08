@@ -18,112 +18,160 @@
 </head>
 <body >
 	<script type="text/javascript">
-		var renderer = new THREE.WebGLRenderer({
-			    alpha: true
-		    });
-			renderer.setClearColor(new THREE.Color('lightgrey'), 0)
-			renderer.setSize( window.innerWidth, window.innerHeight );
-			renderer.domElement.style.position = 'absolute'
-			renderer.domElement.style.top = '0px'
-			renderer.domElement.style.left = '0px'
-			document.body.appendChild( renderer.domElement );
-			//调用摄像头
-		    var arToolkitSource = new THREEx.ArToolkitSource({
-				// to read from the webcam 
-				sourceType : 'webcam',
-			})
-			arToolkitSource.init(function onReady(){
-				// handle resize of renderer
-				arToolkitSource.onResize(renderer.domElement)		
-			})
+		//////////////////////////////////////////////////////////////////////////////////
+	//		Init
+	//////////////////////////////////////////////////////////////////////////////////
 
-			/*渲染器（Renderer）*/
-			// var renderer = new THREE.WebGLRenderer({//获取canvas
-			//     canvas: document.getElementById('mainCanvas')
-			// });
-			//如想要Three.js生成Canvas元素，在HTML中就不需要定义Canvas元素，在JavaScript代码中可以这样写：
-			//var renderer = new THREE.WebGLRenderer();
-			//renderer.setSize(400, 300);
-			//document.getElementsByTagName('body')[0].appendChild(renderer.domElement);//将渲染器对应的Canvas元素添加到<body>中
-			//renderer.setClearColor(0x000000);//我们可以使用此代码将背景色（用于清除画面的颜色）设置为黑色
-			/*场景（Scene）*/
-			var scene = new THREE.Scene();
-			/*照相机（Camera）*/
-			  //公式：THREE.OrthographicCamera(left, right, top, bottom, near, far)
-			  //为了保持照相机的横竖比例，需要保证(right - left)与(top - bottom)的比例与Canvas宽度与高度的比例一致，为了保证场景中的物体不会因为太近或太远而被照相机忽略，一般near的值设置得较小，far的值设置得较大
-			var camera = new THREE.Camera();
-			scene.add(camera);
-			arToolkitSource.init(function onReady(){
-				arToolkitSource.onResize(renderer.domElement)		
-			})
-			window.addEventListener('resize', function(){
-				arToolkitSource.onResize(renderer.domElement)		
-			})	
-			var arToolkitContext = new THREEx.ArToolkitContext({
-				cameraParametersUrl: 'data/camera_para.dat',
-				detectionMode: 'mono',
-				canvasWidth: 80*3,
-				canvasHeight: 60*3,
-			})
-			arToolkitContext.init(function onCompleted(){
-				// copy projection matrix to camera
-				camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
-			})
-			onRenderFcts.push(function(){
-				if( arToolkitSource.ready === false )	return
-				arToolkitContext.update( arToolkitSource.domElement )
-			})
+	// init renderer
+	var renderer	= new THREE.WebGLRenderer({
+		// antialias	: true,
+		alpha: true
+	});
+	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
+	// renderer.setPixelRatio( 1/2 );
+	renderer.setSize( window.innerWidth, window.innerHeight );
+	renderer.domElement.style.position = 'absolute'
+	renderer.domElement.style.top = '0px'
+	renderer.domElement.style.left = '0px'
+	document.body.appendChild( renderer.domElement );
 
-			var markerRoot = new THREE.Group
-			scene.add(markerRoot)
-			var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
-				type : 'pattern',
-				patternUrl : 'data/pattern-files/pattern-hiro.patt'
-			})
+	// array of functions for the rendering loop
+	var onRenderFcts= [];
 
-			// add a torus knot	
-			var geometry	= new THREE.CubeGeometry(1,1,1);
-			var material	= new THREE.MeshNormalMaterial({
-				transparent : true,
-				opacity: 0.5,
-				side: THREE.DoubleSide
-			}); 
-			var mesh	= new THREE.Mesh( geometry, material );
-			mesh.position.y	= geometry.parameters.height/2
-			markerRoot.add( mesh );
-			
-			var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,32,32);
-			var material	= new THREE.MeshNormalMaterial(); 
-			var mesh	= new THREE.Mesh( geometry, material );
-			mesh.position.y	= 0.5
-			markerRoot.add( mesh );
-			
-			onRenderFcts.push(function(){
-				mesh.rotation.x += 0.1
-			})
-			var stats = new Stats();
-			document.body.appendChild( stats.dom );
-			// render the scene
-			onRenderFcts.push(function(){
-				renderer.render( scene, camera );
-				stats.update();
-			})
+	// init scene and camera
+	var scene	= new THREE.Scene();
 
+	var ambient = new THREE.AmbientLight( 0x666666 );
+	scene.add( ambient );
 
-			// run the rendering loop
-			var lastTimeMsec= null
-			requestAnimationFrame(function animate(nowMsec){
-				// keep looping
-				requestAnimationFrame( animate );
-				// measure time
-				lastTimeMsec	= lastTimeMsec || nowMsec-1000/60
-				var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec)
-				lastTimeMsec	= nowMsec
-				// call each update function
-				onRenderFcts.forEach(function(onRenderFct){
-					onRenderFct(deltaMsec/1000, nowMsec/1000)
-				})
-			})
+	var directionalLight = new THREE.DirectionalLight( 0x887766 );
+	directionalLight.position.set( -1, 1, 1 ).normalize();
+	scene.add( directionalLight );
+	
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Initialize a basic camera
+	//////////////////////////////////////////////////////////////////////////////////
+
+	// Create a camera
+	var camera = new THREE.Camera();
+	scene.add(camera);
+
+	////////////////////////////////////////////////////////////////////////////////
+	//          handle arToolkitSource
+	////////////////////////////////////////////////////////////////////////////////
+
+	var arToolkitSource = new THREEx.ArToolkitSource({
+		// to read from the webcam 
+		sourceType : 'webcam',
+		
+		// to read from an image
+		// sourceType : 'image',
+		// sourceUrl : '../../data/images/img.jpg',		
+
+		// to read from a video
+		// sourceType : 'video',
+		// sourceUrl : '../../data/videos/headtracking.mp4',		
+	})
+
+	arToolkitSource.init(function onReady(){
+		// handle resize of renderer
+		arToolkitSource.onResize(renderer.domElement)		
+	})
+	
+	// handle resize
+	window.addEventListener('resize', function(){
+		// handle arToolkitSource resize
+		arToolkitSource.onResize(renderer.domElement)		
+	})	
+	////////////////////////////////////////////////////////////////////////////////
+	//          initialize arToolkitContext
+	////////////////////////////////////////////////////////////////////////////////
+	
+
+	// create atToolkitContext
+	var arToolkitContext = new THREEx.ArToolkitContext({
+		cameraParametersUrl: 'data/camera_para.dat',
+		detectionMode: 'mono',
+		maxDetectionRate: 30,
+		canvasWidth: 80*3,
+		canvasHeight: 60*3,
+	})
+	// initialize it
+	arToolkitContext.init(function onCompleted(){
+		// copy projection matrix to camera
+		camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
+	})
+
+	// update artoolkit on every frame
+	onRenderFcts.push(function(){
+		if( arToolkitSource.ready === false )	return
+
+		arToolkitContext.update( arToolkitSource.domElement )
+	})
+	
+	
+	////////////////////////////////////////////////////////////////////////////////
+	//          Create a ArMarkerControls
+	////////////////////////////////////////////////////////////////////////////////
+	
+	var markerRoot = new THREE.Group
+	scene.add(markerRoot)
+	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
+		type : 'pattern',
+		patternUrl : 'data/pattern-files/pattern-hiro.dat'
+		// patternUrl : '../../data/data/patt.kanji'
+	})
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		add an object in the scene
+	//////////////////////////////////////////////////////////////////////////////////
+
+	// add a torus knot	
+	var geometry	= new THREE.CubeGeometry(1,1,1);
+	var material	= new THREE.MeshNormalMaterial({
+		transparent : true,
+		opacity: 0.5,
+		side: THREE.DoubleSide
+	}); 
+	var mesh	= new THREE.Mesh( geometry, material );
+	mesh.position.y	= geometry.parameters.height/2
+	markerRoot.add( mesh );
+	
+	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,32,32);
+	var material	= new THREE.MeshNormalMaterial(); 
+	var mesh	= new THREE.Mesh( geometry, material );
+	mesh.position.y	= 0.5
+	markerRoot.add( mesh );
+	
+	onRenderFcts.push(function(){
+		mesh.rotation.x += 0.1
+	})
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		render the whole thing on the page
+	//////////////////////////////////////////////////////////////////////////////////
+	var stats = new Stats();
+	document.body.appendChild( stats.dom );
+	// render the scene
+	onRenderFcts.push(function(){
+		renderer.render( scene, camera );
+		stats.update();
+	})
+
+	// run the rendering loop
+	var lastTimeMsec= null
+	requestAnimationFrame(function animate(nowMsec){
+		// keep looping
+		requestAnimationFrame( animate );
+		// measure time
+		lastTimeMsec	= lastTimeMsec || nowMsec-1000/60
+		var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec)
+		lastTimeMsec	= nowMsec
+		// call each update function
+		onRenderFcts.forEach(function(onRenderFct){
+			onRenderFct(deltaMsec/1000, nowMsec/1000)
+		})
+	})
 	</script>
 </body>
 </html>
