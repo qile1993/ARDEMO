@@ -40,14 +40,7 @@
 	var onRenderFcts= [];
 
 	// init scene and camera
-	var scene = new THREE.Scene();
-
-	var ambient = new THREE.AmbientLight( 0x666666 );
-	scene.add( ambient );
-
-	var directionalLight = new THREE.DirectionalLight( 0x887766 );
-	directionalLight.position.set( -1, 1, 1 ).normalize();
-	scene.add( directionalLight );
+	var scene	= new THREE.Scene();
 	
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Initialize a basic camera
@@ -64,18 +57,31 @@
 	var arToolkitSource = new THREEx.ArToolkitSource({
 		// to read from the webcam 
 		sourceType : 'webcam',
+
+		// to read from an image
+		// sourceType : 'image',
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',		
+
+		// to read from a video
+		// sourceType : 'video',
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',		
 	})
 
 	arToolkitSource.init(function onReady(){
-		// handle resize of renderer
-		arToolkitSource.onResize(renderer.domElement)		
+		onResize()
 	})
 	
 	// handle resize
 	window.addEventListener('resize', function(){
-		// handle arToolkitSource resize
-		arToolkitSource.onResize(renderer.domElement)		
-	})	
+		onResize()
+	})
+	function onResize(){
+		arToolkitSource.onResize()	
+		arToolkitSource.copySizeTo(renderer.domElement)	
+		if( arToolkitContext.arController !== null ){
+			arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)	
+		}	
+	}
 	////////////////////////////////////////////////////////////////////////////////
 	//          initialize arToolkitContext
 	////////////////////////////////////////////////////////////////////////////////
@@ -112,29 +118,41 @@
 	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
 		type : 'pattern',
 		patternUrl : 'data/pattern-files/open.patt'
-		// patternUrl : '../../data/data/patt.kanji'
 	})
 
+	// build a smoothedControls
+	var smoothedRoot = new THREE.Group()
+	scene.add(smoothedRoot)
+	var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot, {
+		lerpPosition: 0.4,
+		lerpQuaternion: 0.3,
+		lerpScale: 1,
+	})
+	onRenderFcts.push(function(delta){
+		smoothedControls.update(markerRoot)
+	})
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object in the scene
 	//////////////////////////////////////////////////////////////////////////////////
 
+	var arWorldRoot = smoothedRoot
+
 	// add a torus knot	
-	var geometry = new THREE.CubeGeometry(1,1,1);
-	var material = new THREE.MeshNormalMaterial({
+	var geometry	= new THREE.CubeGeometry(1,1,1);
+	var material	= new THREE.MeshNormalMaterial({
 		transparent : true,
 		opacity: 0.5,
 		side: THREE.DoubleSide
 	}); 
-	var mesh = new THREE.Mesh( geometry, material );
+	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.y	= geometry.parameters.height/2
-	markerRoot.add( mesh );
+	arWorldRoot.add( mesh );
 	
-	var geometry = new THREE.TorusKnotGeometry(0.3,0.1,32,32);
-	var material = new THREE.MeshNormalMaterial(); 
-	var mesh = new THREE.Mesh( geometry, material );
+	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
+	var material	= new THREE.MeshNormalMaterial(); 
+	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.y	= 0.5
-	markerRoot.add( mesh );
+	arWorldRoot.add( mesh );
 	
 	onRenderFcts.push(function(){
 		mesh.rotation.x += 0.1
@@ -157,9 +175,9 @@
 		// keep looping
 		requestAnimationFrame( animate );
 		// measure time
-		lastTimeMsec = lastTimeMsec || nowMsec-1000/60
-		var deltaMsec = Math.min(200, nowMsec - lastTimeMsec)
-		lastTimeMsec = nowMsec
+		lastTimeMsec	= lastTimeMsec || nowMsec-1000/60
+		var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec)
+		lastTimeMsec	= nowMsec
 		// call each update function
 		onRenderFcts.forEach(function(onRenderFct){
 			onRenderFct(deltaMsec/1000, nowMsec/1000)
