@@ -12,16 +12,11 @@
 	<!-- include threex.artoolkit -->
 	<script src='js/vendor/threex/threex-artoolkitsource.js'></script>
 	<script src='js/vendor/threex/threex-artoolkitcontext.js'></script>
-	<script src='js/vendor/threex/threex-artoolkitprofile.js'></script>
-	<script src='js/vendor/threex/threex-arbasecontrols.js'></script>
 	<script src='js/vendor/threex/threex-armarkercontrols.js'></script>
-	<script src='js/vendor/threex/threex-arsmoothedcontrols.js'></script>
 </head>
 <body >
 	<body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center; z-index: 1;'>
-	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - three.js mobile performance
 	<br/>
-	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 </div>
 	<script type="text/javascript">
 	//////////////////////////////////////////////////////////////////////////////////
@@ -156,19 +151,19 @@
 	})
 
 	// run the rendering loop
-	// var lastTimeMsec= null
-	// requestAnimationFrame(function animate(nowMsec){
-	// 	// keep looping
-	// 	requestAnimationFrame( animate );
-	// 	// measure time
-	// 	lastTimeMsec = lastTimeMsec || nowMsec-1000/60
-	// 	var deltaMsec = Math.min(200, nowMsec - lastTimeMsec)
-	// 	lastTimeMsec = nowMsec
-	// 	// call each update function
-	// 	onRenderFcts.forEach(function(onRenderFct){
-	// 		onRenderFct(deltaMsec/1000, nowMsec/1000)
-	// 	})
-	// })
+	var lastTimeMsec= null
+	requestAnimationFrame(function animate(nowMsec){
+		// keep looping
+		requestAnimationFrame( animate );
+		// measure time
+		lastTimeMsec = lastTimeMsec || nowMsec-1000/60
+		var deltaMsec = Math.min(200, nowMsec - lastTimeMsec)
+		lastTimeMsec = nowMsec
+		// call each update function
+		onRenderFcts.forEach(function(onRenderFct){
+			onRenderFct(deltaMsec/1000, nowMsec/1000)
+		})
+	})
 	</script>
 </body>
 </html>
