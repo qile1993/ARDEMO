@@ -77,15 +77,25 @@
 			var markerRoot = new THREE.Group
 			scene.add(markerRoot);
 			markerRoot.add(mesh);
+			onRenderFcts.push(function(){
+				mesh.rotation.x += 0.1
+			})
+			var markerRoot = new THREE.Group
+			scene.add(markerRoot);
 			var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
 				type : 'pattern',
-				patternUrl : 'data/pattern-files/open.patt'
-				//patternUrl : '../../data/data/patt.kanji',
+				patternUrl : '../../data/multi/open.td'
+				// patternUrl : '../../data/data/patt.kanji'
 			})
+
 			var stats = new Stats();
 			document.body.appendChild( stats.dom );
 			// render the scene
-			renderer.render( scene, camera );
+			onRenderFcts.push(function(){
+				renderer.render( scene, camera );
+				stats.update();
+			})
+			
 				
 	</script>
 </body>
