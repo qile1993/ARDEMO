@@ -147,7 +147,7 @@
 	var material = new THREE.MeshNormalMaterial(); 
 	var mesh = new THREE.Mesh( geometry, material );
 	mesh.position.y = mesh.position.x  = 0.001;
-	dae.rotation.set( Math.PI/2,-Math.PI*2,Math.PI/2);
+	dae.rotation.set( Math.PI/2,Math.PI*2,Math.PI/2);
 	arWorldRoot.add( mesh );
 	
 	onRenderFcts.push(function(){
