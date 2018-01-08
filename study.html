@@ -5,6 +5,7 @@
 	<title>learn</title>
 	<meta name='viewport' content='width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0'>
 	<script src='js/vendor/three.js/build/three.js'></script>
+	<script src='js/vendor/three.js/build/ar.js'></script>
 	<script type="text/javascript" src="js/vendor/stats.min.js"></script>
 	<!-- jsartookit -->
 	<script src='js/vendor/jsartoolkit5/build/artoolkit.min.js'></script>
@@ -118,6 +119,7 @@
 	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
 		type : 'pattern',
 		patternUrl : 'data/pattern-files/open.patt'
+		// patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji'
 	})
 
 	// build a smoothedControls
