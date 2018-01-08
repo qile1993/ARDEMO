@@ -149,9 +149,9 @@
 	mesh.position.y = mesh.position.x = mesh.position.z = 0.001;
 	arWorldRoot.add( mesh );
 	
-	// onRenderFcts.push(function(){
-	// 	mesh.rotation.x += 0.1
-	// })
+	onRenderFcts.push(function(){
+		mesh.rotation.x += 0.01;
+	})
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page
