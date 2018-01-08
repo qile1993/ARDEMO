@@ -5,6 +5,7 @@
 <script src="vendor/three.js/examples/js/libs/stats.min.js"></script>
 <!-- ar.js -->
 <script src="../build/ar.js"></script>
+<script>THREEx.ArToolkitContext.baseURL = '../'</script>
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center; z-index: 1;'>
 	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - three.js mobile performance
@@ -141,11 +142,11 @@
 	// mesh.position.y	= geometry.parameters.height/2
 	// arWorldRoot.add( mesh );
 	
-	// var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
-	// var material	= new THREE.MeshNormalMaterial(); 
-	// var mesh	= new THREE.Mesh( geometry, material );
-	// mesh.position.y	= 0.5
-	// arWorldRoot.add( mesh );
+	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
+	var material	= new THREE.MeshNormalMaterial(); 
+	var mesh	= new THREE.Mesh( geometry, material );
+	mesh.position.y	= 0.5
+	arWorldRoot.add( mesh );
 	
 	onRenderFcts.push(function(){
 		mesh.rotation.x += 0.1
