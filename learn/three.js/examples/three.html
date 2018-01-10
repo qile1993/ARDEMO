@@ -120,7 +120,7 @@
 	// ASCII file
 	var loader = new THREE.ColladaLoader();
 	loader.options.convertUpAxis = true;
-	loader.load( THREEx.ArToolkitContext.baseURL + '../data/models/dae/1.4.dae', function ( collada ) {
+	loader.load( THREEx.ArToolkitContext.baseURL + '../data/models/dae/1-4.dae', function ( collada ) {
 		dae = collada.scene;
 		dae.traverse(function(child) {
 	        if (child instanceof THREE.Mesh) {
