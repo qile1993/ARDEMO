@@ -2,7 +2,7 @@
 <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 <!-- three.js library -->
 <script src='../build/three.min.js'></script>
-<script src="../build/stats.min.js"></script>
+<script src="..build/stats.min.js"></script>
 <!-- ar.js -->
 <script src="../build/ar.js"></script>
 <script>THREEx.ArToolkitContext.baseURL = '../'</script>
@@ -20,12 +20,12 @@
 		// antialias	: true,
 		alpha: true
 	});
-	// renderer.setClearColor(new THREE.Color('lightgrey'), 0)
-	// // renderer.setPixelRatio( 1/2 );
-	// renderer.setSize( window.innerWidth, window.innerHeight );
-	// renderer.domElement.style.position = 'absolute'
-	// renderer.domElement.style.top = '0px'
-	// renderer.domElement.style.left = '0px'
+	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
+	// renderer.setPixelRatio( 1/2 );
+	renderer.setSize( window.innerWidth, window.innerHeight );
+	renderer.domElement.style.position = 'absolute'
+	renderer.domElement.style.top = '0px'
+	renderer.domElement.style.left = '0px'
 	document.body.appendChild( renderer.domElement );
 
 	// array of functions for the rendering loop
@@ -142,17 +142,15 @@
 	// arWorldRoot.add( mesh );
 	
 	//var geometry = new THREE.TorusKnotGeometry(0.3,0.1,64,16);
-	// var material = new THREE.MeshLambertMaterial({
-	//     color: 0xffff00
-	// });
 	var geometry = new THREE.TorusGeometry(3, 1, 12, 18);
-	// var material = new THREE.MeshNormalMaterial(); 
-	var mesh = new THREE.Mesh( geometry,material );
-	mesh.position.set(1.5, -0.5, 0);
-	arWorldRoot.add( geometry );
+	var material = new THREE.MeshNormalMaterial(); 
+	var mesh = new THREE.Mesh( geometry, material );
+	mesh.position.y = mesh.position.x  = 0.001;
+	mesh.rotation.set( 0,0,Math.PI/2);
+	arWorldRoot.add( mesh );
 	
 	onRenderFcts.push(function(){
-		mesh.rotation.x += 0.05;
+		mesh.rotation.z += 0.05;
 	})
 
 	//////////////////////////////////////////////////////////////////////////////////
