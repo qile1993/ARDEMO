@@ -78,14 +78,9 @@
 	        height: 1
 	    }), material);
 	    scene.add(mesh);
+	    // render
+	    renderer.render(scene, camera);
 	});
-	var stats = new Stats();
-	document.body.appendChild( stats.dom );
-	// render the scene
-	onRenderFcts.push(function(){
-		renderer.render( scene, camera );
-		stats.update();
-	})
 	</script>
 </body>
 </html>
