@@ -143,15 +143,15 @@
 	
 	var geometry = new THREE.TorusGeometry(0.3,0.1,64,16);
 	//var geometry = new THREE.IcosahedronGeometry(1)
-	var material = new THREE.MeshNormalMaterial(); 
-	var material = new THREE.MeshBasicMaterial({
-	    color: 0xffff00,
-	    side: THREE.DoubleSide
-	});
-	var mesh = new THREE.Mesh( geometry, material );
+	//var material = new THREE.MeshNormalMaterial(); 
+	// var material = new THREE.MeshBasicMaterial({
+	//     color: 0xffff00,
+	//     side: THREE.DoubleSide
+	// });
+	//var mesh = new THREE.Mesh( geometry, material );
 	mesh.position.y = mesh.position.x  = 0.001;
 	mesh.rotation.set( 0,Math.PI,Math.PI/2);
-	arWorldRoot.add( mesh );
+	arWorldRoot.add( geometry );
 	
 	onRenderFcts.push(function(){
 		mesh.rotation.x += 0.05;
